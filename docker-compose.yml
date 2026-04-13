@@ -1,0 +1,56 @@
+services:
+  zetacoind:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        ZETACOIN_VERSION: "v0.14.1.2"
+        ZETACOIN_SOURCE_URL: "https://github.com/WikiMin3R/ZetacoinE/archive/refs/tags/v0.14.1.2.tar.gz"
+    container_name: zetacoind
+    restart: unless-stopped
+
+    environment:
+      ZETACOIN_DATA_DIR: "/home/zetacoin/.zetacoin"
+      ZETACOIN_CONF: "/home/zetacoin/.zetacoin/zetacoin.conf"
+
+      COIND_RPC_USER: "${COIND_RPC_USER}"
+      COIND_RPC_PASSWORD: "${COIND_RPC_PASSWORD}"
+
+      # Zetacoin mainnet defaults
+      COIND_P2P_PORT: "${COIND_P2P_PORT:-22011}"
+      COIND_RPC_PORT: "${COIND_RPC_PORT:-22012}"
+
+      # Keep RPC internal to Docker unless you intentionally publish it
+      COIND_RPC_BIND: "${COIND_RPC_BIND:-0.0.0.0}"
+      COIND_RPC_ALLOW_IP: "${COIND_RPC_ALLOW_IP:-0.0.0.0/0}"
+
+      # Optional extras
+      COIND_TXINDEX: "${COIND_TXINDEX:-1}"
+      COIND_PRUNE: "${COIND_PRUNE:-0}"
+      COIND_MAXCONNECTIONS: "${COIND_MAXCONNECTIONS:-64}"
+      COIND_EXTRA_ARGS: "${COIND_EXTRA_ARGS:-}"
+
+    ports:
+      - "${COIND_P2P_PORT:-22011}:${COIND_P2P_PORT:-22011}"
+      # Intentionally commented out so RPC stays private to the compose network.
+      # Uncomment only if you really want host access:
+      - "${COIND_RPC_PORT:-22012}:${COIND_RPC_PORT:-22012}"
+
+    expose:
+      - "${COIND_P2P_PORT:-22011}"
+      - "${COIND_RPC_PORT:-22012}"
+
+    volumes:
+      - ./dot-zetacoin:/home/zetacoin/.zetacoin
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsS --user \"$${COIND_RPC_USER}:$${COIND_RPC_PASSWORD}\" --data-binary '{\"jsonrpc\":\"1.0\",\"id\":\"health\",\"method\":\"getinfo\",\"params\":[]}' -H 'content-type: text/plain;' http://127.0.0.1:$${COIND_RPC_PORT}/ >/dev/null"
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 20
+      start_period: 120s
