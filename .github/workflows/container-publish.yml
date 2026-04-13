@@ -26,6 +26,16 @@ jobs:
   build:
     name: Build image
     runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'pull_request' && (
+        contains(join(github.event.pull_request.changed_files.*.filename, ','), 'Dockerfile') ||
+        contains(join(github.event.pull_request.changed_files.*.filename, ','), 'docker-entrypoint.sh')
+      ) ||
+      github.event_name != 'pull_request' && (
+        contains(join(github.event.commits.*.modified, ','), 'Dockerfile') ||
+        contains(join(github.event.commits.*.modified, ','), 'docker-entrypoint.sh')
+      )
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
