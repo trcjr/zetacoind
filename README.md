@@ -115,3 +115,29 @@ ghcr.io/<owner>/<repo>:<tag>
 ## Notes on Base Image
 
 The image currently uses `debian:stretch-slim` for both build and runtime stages to match legacy Zetacoin dependencies.
+
+---
+
+## Donations
+
+If this project helps you, donations are appreciated but never expected.
+
+Running infrastructure (nodes, storage, bandwidth) costs real resources - your support helps keep things online and decentralized.
+
+### Crypto
+
+- BTC: bc1qvhay5salwnyey2cnel9xf8tkejqr79un9ew2g2
+- BTC (Lightning): alonemadam426@walletofsatoshi.com
+- ETH / EVM (ETH, Base, Arbitrum, etc): 0xf1d140F26f23C82D6Ef58E9F3892e45ad1BC4E4b
+- USDC (ERC20 - Ethereum mainnet): 0xf1d140F26f23C82D6Ef58E9F3892e45ad1BC4E4b
+- ZET: 99U5yQBcnJ1XS3uKFk3UDY6oXv8yC7Hy5B
+
+Donations do not grant special privileges or influence over the project.
+
+---
+
+## License
+
+MIT License - Copyright (c) 2026 Theodore Robert Campbell Jr
+
+See [LICENSE](LICENSE) for full terms.
