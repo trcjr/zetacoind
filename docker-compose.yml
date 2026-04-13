@@ -1,6 +1,7 @@
 services:
   zetacoind:
     platform: linux/amd64
+    # image: pull ghcr.io/trcjr/zetacoind:latest
     build:
       context: .
       dockerfile: Dockerfile
