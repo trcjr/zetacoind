@@ -133,7 +133,7 @@ RUN useradd -m -u 1000 -s /bin/bash zetacoin
 WORKDIR /opt/zetacoin
 
 COPY --from=builder --chmod=755 /tmp/zetacoin-src/src/zetacoind /usr/local/bin/zetacoind
-COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["zetacoind"]

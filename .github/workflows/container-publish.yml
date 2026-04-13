@@ -36,13 +36,13 @@ jobs:
       startsWith(github.ref, 'refs/tags/') ||
       github.event_name == 'pull_request' && (
         contains(join(github.event.pull_request.changed_files.*.filename, ','), 'Dockerfile') ||
-        contains(join(github.event.pull_request.changed_files.*.filename, ','), 'docker-entrypoint.sh')
+        contains(join(github.event.pull_request.changed_files.*.filename, ','), 'entrypoint.sh')
       ) ||
       github.event_name == 'push' && startsWith(github.ref, 'refs/heads/') && (
         contains(join(github.event.commits.*.modified, ','), 'Dockerfile') ||
         contains(join(github.event.commits.*.added, ','), 'Dockerfile') ||
-        contains(join(github.event.commits.*.modified, ','), 'docker-entrypoint.sh') ||
-        contains(join(github.event.commits.*.added, ','), 'docker-entrypoint.sh')
+        contains(join(github.event.commits.*.modified, ','), 'entrypoint.sh') ||
+        contains(join(github.event.commits.*.added, ','), 'entrypoint.sh')
       )
     steps:
       - name: Checkout repository

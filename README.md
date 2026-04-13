@@ -10,7 +10,7 @@ Containerized Zetacoin daemon (`zetacoind`) with:
 ## What This Repo Contains
 
 - `Dockerfile`: Builds and packages `zetacoind`
-- `docker-entrypoint.sh`: Creates config and starts the daemon as non-root user `zetacoin`
+- `entrypoint.sh`: Creates config and starts the daemon as non-root user `zetacoin`
 - `docker-compose.yml`: Local service definition and healthcheck
 - `.github/workflows/container-publish.yml`: CI build/publish workflow
 
