@@ -5,7 +5,7 @@ FROM --platform=$TARGETPLATFORM debian:stretch-slim AS builder
 ARG TARGETPLATFORM
 ARG TARGETARCH
 ARG ZETACOIN_VERSION=v0.14.1.2
-ARG ZETACOIN_REPO=https://github.com/WikiMin3R/ZetacoinE.git
+ARG ZETACOIN_REPO=https://github.com/trcjr/ZetacoinE.git
 ARG MAKE_JOBS=2
 
 ENV DEBIAN_FRONTEND=noninteractive

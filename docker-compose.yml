@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
       args:
         ZETACOIN_VERSION: "v0.14.1.2"
-        ZETACOIN_SOURCE_URL: "https://github.com/WikiMin3R/ZetacoinE/archive/refs/tags/v0.14.1.2.tar.gz"
+        ZETACOIN_REPO: "https://github.com/trcjr/ZetacoinE.git"
     container_name: zetacoind
     restart: unless-stopped
 
