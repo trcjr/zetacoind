@@ -103,6 +103,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            ZETACOIN_VERSION=${{ inputs.zetacoin_version }}
-            ZETACOIN_REPO=${{ inputs.zetacoin_repo }}
+          build-args: >-
+            ${{ inputs.zetacoin_version && format('ZETACOIN_VERSION={0}', inputs.zetacoin_version) || '' }}
+            ${{ inputs.zetacoin_repo && format('ZETACOIN_REPO={0}', inputs.zetacoin_repo) || '' }}
