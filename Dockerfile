@@ -5,7 +5,7 @@ FROM --platform=$TARGETPLATFORM debian:stretch-slim AS builder
 ARG TARGETPLATFORM
 ARG TARGETARCH
 ARG ZETACOIN_VERSION=v0.14.1.2
-ARG ZETACOIN_SOURCE_URL=https://github.com/WikiMin3R/ZetacoinE/archive/refs/tags/v0.14.1.2.tar.gz
+ARG ZETACOIN_REPO=https://github.com/WikiMin3R/ZetacoinE.git
 ARG MAKE_JOBS=2
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -32,23 +32,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /tmp
 
-RUN test -n "${ZETACOIN_SOURCE_URL}" \
- && ( \
-      curl -fL \
-        --retry 8 \
-        --retry-delay 5 \
-        --connect-timeout 30 \
-        --max-time 600 \
-        "${ZETACOIN_SOURCE_URL}" \
-        -o zetacoin-src.tar.gz \
-      && tar -xzf zetacoin-src.tar.gz \
-      && SRC_DIR="$(tar -tzf zetacoin-src.tar.gz | head -n1 | cut -d/ -f1)" \
-      && mv "${SRC_DIR}" zetacoin-src \
-    ) \
- || ( \
-      rm -rf /tmp/zetacoin-src /tmp/zetacoin-src.tar.gz \
-      && git clone --depth 1 --branch "${ZETACOIN_VERSION}" https://github.com/WikiMin3R/ZetacoinE.git /tmp/zetacoin-src \
-    )
+RUN rm -rf /tmp/zetacoin-src /tmp/zetacoin-src.tar.gz \
+ && git clone --depth=1 --no-single-branch "${ZETACOIN_REPO}" /tmp/zetacoin-src \
+ && cd /tmp/zetacoin-src \
+ && if git rev-parse --verify --quiet "${ZETACOIN_VERSION}^{commit}" >/dev/null; then \
+      git checkout "${ZETACOIN_VERSION}"; \
+    else \
+      git fetch --depth=1 origin "${ZETACOIN_VERSION}" \
+      && git checkout FETCH_HEAD; \
+    fi \
+ || (echo "Invalid ZETACOIN_VERSION=${ZETACOIN_VERSION}" && exit 1)
 
 WORKDIR /tmp/zetacoin-src/src
 
