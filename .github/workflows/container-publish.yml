@@ -19,6 +19,14 @@ on:
         required: false
         default: develop
         type: string
+      zetacoin_version:
+        description: "Zetacoin version or branch to build (used as image tag)"
+        required: false
+        type: string
+      zetacoin_repo:
+        description: "Zetacoin repo URL to clone/build from"
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -78,8 +86,9 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ github.repository }}
           tags: |
             type=ref,event=tag
-            type=raw,value=develop,enable=${{ github.ref == 'refs/heads/develop' || (github.event_name == 'workflow_dispatch' && inputs.tag == '' && inputs.branch == 'develop') }}
+            type=raw,value=develop,enable=${{ github.ref == 'refs/heads/develop' || (github.event_name == 'workflow_dispatch' && inputs.tag == '' && inputs.branch == 'develop' && inputs.zetacoin_version == '') }}
             type=raw,value=${{ inputs.tag }},enable=${{ github.event_name == 'workflow_dispatch' && inputs.tag != '' }}
+            type=raw,value=${{ inputs.zetacoin_version }},enable=${{ github.event_name == 'workflow_dispatch' && inputs.zetacoin_version != '' }}
             type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && (inputs.tag != '' || inputs.branch == 'main')) }}
 
       - name: Build and push image
@@ -94,3 +103,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            ZETACOIN_VERSION=${{ inputs.zetacoin_version }}
+            ZETACOIN_REPO=${{ inputs.zetacoin_repo }}
