@@ -1,12 +1,11 @@
 services:
   zetacoind:
-    platform: linux/amd64
     # image: pull ghcr.io/trcjr/zetacoind:latest
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        ZETACOIN_VERSION: "v0.14.1.2"
+        ZETACOIN_VERSION: "v14.1.2.0"
         ZETACOIN_REPO: "https://github.com/trcjr/ZetacoinE.git"
     container_name: zetacoind
     restart: unless-stopped
